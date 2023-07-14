@@ -33,3 +33,4 @@ export const db = mongoose.connect(connectionString, options)
     }).catch(err => {
         console.log(err)
     })
+

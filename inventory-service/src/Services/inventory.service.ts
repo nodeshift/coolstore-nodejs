@@ -25,10 +25,10 @@ export class InventoryService {
     }
 
     //get one
-    async getItem(id: string) {
+    async getItem(itemId: string) {
 
         try {
-            const item = await Inventory.findById({_id:id})
+            const item = await Inventory.findOne(({ itemId: itemId }))
             if (!item) {
                 return 'item not found'
             }
@@ -40,9 +40,9 @@ export class InventoryService {
     }
 
     //update inventory
-    async updateItem(id: string, data: any) {
+    async updateItem(itemId: string, data: any) {
         try {
-            const item = await Inventory.findByIdAndUpdate({_id:id}, data, {new: true})
+            const item = await Inventory.findOneAndUpdate({ itemId: itemId }, data, {new: true})
             if(!item){
                 return "item not found"
             }
@@ -53,9 +53,9 @@ export class InventoryService {
     }
 
     //delete inventory
-    async deleteItem(id: string) {
+    async deleteItem(itemId: string) {
         try {
-            const item = await Inventory.findByIdAndDelete(id)
+            const item = await Inventory.findOneAndDelete({ itemId: itemId })
             if (!item) {
                 return 'item not found'
             }

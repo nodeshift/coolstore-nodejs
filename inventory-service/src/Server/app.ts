@@ -16,3 +16,5 @@ app.use('/api/v1/inventory', router)
 db.then(() => {
     app.listen(7070, () => console.log('Server is listening on port 7070'))
 })
+
+export { app };
