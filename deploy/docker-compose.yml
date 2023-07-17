@@ -12,4 +12,17 @@ services:
         ports:
             - 27017:27017
         volumes:
-            - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+            - ./inventory-init.js:/docker-entrypoint-initdb.d/inventory-init.js:ro
+
+    catalogDB:
+        image: mongo:latest
+        container_name: inventoryDB
+        restart: always
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: example
+            MONGO_INITDB_DATABASE: Catalog
+        ports:
+            - 27017:27017
+        volumes:
+            - ./inventory-init.js:/docker-entrypoint-initdb.d/catalog-init.js:ro
