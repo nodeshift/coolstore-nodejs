@@ -1,6 +1,7 @@
 import {Catalog} from "../Models/catalog";
 import {InventoryService} from "./inventory.service";
 
+
 export class CatalogService {
 
 
@@ -17,24 +18,22 @@ export class CatalogService {
     }
 
     //get one
-    async getItem(itemId: string) {
+    async getItem(itemId: string){
+
         console.log("calling getItem with "+itemId)
         try {
             const item = await Catalog.findOne(({ itemId: itemId }), {_id: false, __v: false} )
             if (!item) {
                 return 'item not found'
             }
-            InventoryService.getInventoryItem(item.itemId)
-                .then((inventoryItem) => {
-                    console.log('Inventory item:', inventoryItem.quantity);
-                    item.quantity = inventoryItem.quantity;
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
 
+            // Get quantity from inventory-service
+            const inventoryItem = await InventoryService.getInventoryItem(item.itemId);
 
-            return item;
+            return {
+                ...item.toObject(),
+                quantity: inventoryItem.quantity,
+            };
 
         } catch (error) {
             console.log(error)
@@ -42,5 +41,9 @@ export class CatalogService {
     }
 
 }
+
+
+
+
 
 export const catalogService = new CatalogService()
