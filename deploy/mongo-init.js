@@ -6,6 +6,10 @@ db.createUser(
                 {
                     role: "readWrite",
                     db: "Inventory"
+                },
+                {
+                    role: "readWrite",
+                    db: "Catalog"
                 }
             ]
         }

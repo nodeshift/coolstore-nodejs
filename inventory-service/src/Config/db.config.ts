@@ -1,5 +1,7 @@
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import {Inventory} from "../Models/inventory";
+const fs = require('fs');
 
 dotenv.config()
 
@@ -8,6 +10,9 @@ const username = process.env.username
 const password = process.env.password
 const hostname = process.env.hostname
 const dbName   = process.env.dbname
+const importData = fs.readFileSync(__dirname + '/import.json');
+const inventoryData = JSON.parse(importData);
+const currentDirectory = __dirname;
 
 //connection string to mongo atlas
 
@@ -22,12 +27,16 @@ const options = {
 };
 
 console.log(connectionString)
-
 //db connection
 export const db = mongoose.connect(connectionString, options)
     .then(res => {
         if(res){
             console.log(`Database connection succeffully to ${dbName}`)
+
+            Inventory.insertMany(inventoryData)
+                .then(() => {
+                    console.log('Inventory data imported successfully');
+                })
         }
 
     }).catch(err => {
