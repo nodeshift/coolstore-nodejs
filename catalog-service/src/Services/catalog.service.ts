@@ -8,10 +8,16 @@ export class CatalogService {
     // get all
     async getItems() {
         try {
-            const items = await Catalog.find({})
-
-            return items
-
+            const items = await Catalog.find({}, {_id: false, __v: false})
+            return await Promise.all(
+                items.map(async (item) => {
+                    const inventoryItem = await InventoryService.getInventoryItem(item.itemId);
+                    return {
+                        ...item.toObject(),
+                        quantity: inventoryItem.quantity,
+                    };
+                })
+            );
         } catch (error) {
             console.log(error)
         }
