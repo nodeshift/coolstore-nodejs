@@ -18,9 +18,9 @@ export class CatalogService {
 
     //get one
     async getItem(itemId: string) {
-
+        console.log("calling getItem with "+itemId)
         try {
-            const item = await Catalog.findOne(({ itemId: itemId }))
+            const item = await Catalog.findOne(({ itemId: itemId }), {_id: false, __v: false} )
             if (!item) {
                 return 'item not found'
             }
@@ -32,7 +32,9 @@ export class CatalogService {
                 .catch((error) => {
                     console.error(error);
                 });
-            return item
+
+
+            return item;
 
         } catch (error) {
             console.log(error)
