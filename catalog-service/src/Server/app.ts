@@ -14,7 +14,7 @@ app.use('/api/v1/products', router)
 
 //db connection then server connection
 db.then(() => {
-    app.listen(7070, () => console.log('Server is listening on port 7072'))
+    app.listen(7072, () => console.log('Server is listening on port 7072'))
 })
 
 export { app };

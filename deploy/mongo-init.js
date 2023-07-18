@@ -5,12 +5,8 @@ db.createUser(
             roles: [
                 {
                     role: "readWrite",
-                    db: "Inventory"
+                    db: "Coolstore"
                 },
-                {
-                    role: "readWrite",
-                    db: "Catalog"
-                }
             ]
         }
 );

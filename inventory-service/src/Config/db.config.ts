@@ -12,10 +12,8 @@ const hostname = process.env.hostname
 const dbName   = process.env.dbname
 const importData = fs.readFileSync(__dirname + '/import.json');
 const inventoryData = JSON.parse(importData);
-const currentDirectory = __dirname;
 
-//connection string to mongo atlas
-
+//connection string to mongo local
 const connectionString = `mongodb://${username}:${password}@${hostname}/${dbName}`
 
 const options = {

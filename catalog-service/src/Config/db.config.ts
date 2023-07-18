@@ -1,5 +1,7 @@
 import dotenv from 'dotenv'
 import mongoose from 'mongoose'
+import {Catalog} from "../Models/catalog";
+const fs = require('fs');
 
 dotenv.config()
 
@@ -8,8 +10,11 @@ const username = process.env.username
 const password = process.env.password
 const hostname = process.env.hostname
 const dbName   = process.env.dbname
+const importData = fs.readFileSync(__dirname + '/import.json');
+const catalogData = JSON.parse(importData);
 
-//connection string to mongo atlas
+
+//connection string to mongo
 
 const connectionString = `mongodb://${username}:${password}@${hostname}/${dbName}`
 
@@ -28,6 +33,10 @@ export const db = mongoose.connect(connectionString, options)
     .then(res => {
         if(res){
             console.log(`Database connection succeffully to ${dbName}`)
+                Catalog.insertMany(catalogData)
+                .then(() => {
+                    console.log('Catalog data imported successfully');
+                })
         }
 
     }).catch(err => {
