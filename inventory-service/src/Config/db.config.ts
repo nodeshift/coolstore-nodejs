@@ -29,11 +29,11 @@ console.log(connectionString)
 export const db = mongoose.connect(connectionString, options)
     .then(res => {
         if(res){
-            console.log(`Database connection succeffully to ${dbName}`)
+            console.log(`Database connection successful to ${dbName}`)
 
             Inventory.insertMany(inventoryData)
                 .then(() => {
-                    console.log('Inventory data imported successfully');
+                    console.log('Cart data imported successfully');
                 })
         }
 
