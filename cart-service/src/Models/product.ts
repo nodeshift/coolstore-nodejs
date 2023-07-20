@@ -1,9 +1,13 @@
-export interface Product{
+export class Product {
     itemId: string;
-    title: string;
+    name: string;
     desc: string;
     price: number;
-    quantity: number;
-    image: string;
-    category: string;
+
+    constructor(itemId: string, name: string, desc: string, price: number) {
+        this.itemId = itemId;
+        this.name = name;
+        this.desc = desc;
+        this.price = price;
+    }
 }

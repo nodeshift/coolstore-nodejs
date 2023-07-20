@@ -5,13 +5,10 @@ import {cartController} from "../Controllers/cart.controller";
 export const router = express.Router()
 
 //add item
-router.put('/',cartController.addItem)
+router.get('/:cartId',cartController.getCart)
 
-//get cart
-router.get('/:id', cartController.getCart)
+router.put('/:cartId',cartController.addItem)
 
-//checkout
-router.post('/:id', cartController.checkout)
+router.delete('/:cartId',cartController.removeItem)
 
-//delete a post
-router.delete('/:id', cartController.removeItem)
+router.post('/:cartId',cartController.checkout)

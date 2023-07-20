@@ -1,13 +1,13 @@
 import {CartItem} from "./cartItem";
 
 export class Cart {
-    private cartItemTotal: number = 0.0;
-    private cartItemPromoSavings: number = 0.0;
-    private shippingTotal: number = 0.0;
-    private shippingPromoSavings: number = 0.0;
-    private cartTotal: number = 0.0;
-    private cartId: string;
-    private cartItemList: CartItem[] = [];
+    cartItemTotal: number = 0.0;
+    cartItemPromoSavings: number = 0.0;
+    shippingTotal: number = 0.0;
+    shippingPromoSavings: number = 0.0;
+    cartTotal: number = 0.0;
+    cartId: string;
+    cartItemList: CartItem[] = [];
 
 
     constructor(cartId: string) {
