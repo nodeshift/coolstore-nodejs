@@ -4,7 +4,7 @@ import {cartController} from "../Controllers/cart.controller";
 //initiating the router
 export const router = express.Router()
 
-//add item
+
 router.get('/:cartId',cartController.getCart)
 
 router.put('/:cartId',cartController.addItem)

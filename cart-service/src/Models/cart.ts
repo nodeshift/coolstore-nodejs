@@ -1,5 +1,15 @@
 import {CartItem} from "./cartItem";
 
+export interface CartDTO {
+    cartItemTotal: number;
+    cartItemPromoSavings: number;
+    shippingTotal: number;
+    shippingPromoSavings: number;
+    cartTotal: number;
+    cartItems: CartItem[];
+    cartId: string;
+}
+
 export class Cart {
     cartItemTotal: number = 0.0;
     cartItemPromoSavings: number = 0.0;
@@ -7,85 +17,63 @@ export class Cart {
     shippingPromoSavings: number = 0.0;
     cartTotal: number = 0.0;
     cartId: string;
-    cartItemList: CartItem[] = [];
-
+    cartItems: Map<string, CartItem> = new Map<string, CartItem>();
 
     constructor(cartId: string) {
         this.cartId = cartId;
     }
 
-    getCartId(): string {
-        return this.cartId;
-    }
-
-    setCartId(cartId: string): void {
-        this.cartId = cartId;
-    }
-
-    getCartItemList(): CartItem[] {
-        return this.cartItemList;
-    }
-
-    setCartItemList(cartItemList: CartItem[]): void {
-        this.cartItemList = cartItemList;
-    }
-
-    resetCartItemList(): void {
-        this.cartItemList = [];
-    }
-
-    addCartItem(sci: CartItem): void {
-        if (sci != null) {
-            this.cartItemList.push(sci);
+    addCartItem(cartItem: CartItem): void {
+        const cartItemInCart = this.cartItems.get(cartItem.itemId);
+        if (cartItemInCart instanceof CartItem) {
+            cartItemInCart.quantity += cartItem.quantity;
+            cartItemInCart.price = cartItem.price;
+            cartItemInCart.promoSavings = cartItem.promoSavings;
+            this.cartItems.set(cartItemInCart.itemId, cartItemInCart);
+        }
+        else {
+            this.cartItems.set(cartItem.itemId, cartItem);
         }
     }
 
-    removeCartItem(sci: CartItem): boolean {
-        const index = this.cartItemList.indexOf(sci);
-        if (index !== -1) {
-            this.cartItemList.splice(index, 1);
-            return true;
+    removeCartItem(cartItem: CartItem): void {
+        const cartItemInCart = this.cartItems.get(cartItem.itemId);
+        if (cartItemInCart instanceof CartItem) {
+            if (cartItemInCart.quantity >= cartItem.quantity) {
+                cartItemInCart.quantity -= cartItem.quantity;
+                this.cartItems.set(cartItemInCart.itemId, cartItemInCart);
+            } else {
+                this.cartItems.delete(cartItem.itemId);
+
+                this.resetTotals();
+            }
+
         }
-        return false;
     }
 
-    getCartItemTotal(): number {
-        return this.cartItemTotal;
+    resetTotals(){
+        this.cartItemTotal = 0.0;
+        this.cartItemPromoSavings = 0.0;
+        this.shippingTotal = 0.0;
+        this.shippingPromoSavings = 0.0;
+        this.cartTotal = 0.0;
     }
 
-    setCartItemTotal(cartItemTotal: number): void {
-        this.cartItemTotal = cartItemTotal;
+    removeAllItems(): void {
+        this.cartItems = new Map<string, CartItem>();
     }
 
-    getShippingTotal(): number {
-        return this.shippingTotal;
+    toDTO(): CartDTO {
+        const cartItems: CartItem[] = Array.from(this.cartItems.values());
+        return {
+            cartItemTotal: this.cartItemTotal,
+            cartItemPromoSavings: this.cartItemPromoSavings,
+            shippingTotal: this.shippingTotal,
+            shippingPromoSavings: this.shippingPromoSavings,
+            cartTotal: this.cartTotal,
+            cartItems,
+            cartId: this.cartId,
+        };
     }
 
-    setShippingTotal(shippingTotal: number): void {
-        this.shippingTotal = shippingTotal;
-    }
-
-    getCartTotal(): number {
-        return this.cartTotal;
-    }
-
-    setCartTotal(cartTotal: number): void {
-        this.cartTotal = cartTotal;
-    }
-
-    getCartItemPromoSavings(): number {
-        return this.cartItemPromoSavings;
-    }
-
-    setCartItemPromoSavings(cartItemPromoSavings: number): void {
-        this.cartItemPromoSavings = cartItemPromoSavings;
-    }
-
-    getShippingPromoSavings(): number {
-        return this.shippingPromoSavings;
-    }
-
-    setShippingPromoSavings(shippingPromoSavings: number): void {
-        this.shippingPromoSavings = shippingPromoSavings;
-    }
 }
