@@ -30,16 +30,23 @@ console.log(connectionString)
 
 //db connection
 export const db = mongoose.connect(connectionString, options)
-    .then(res => {
+    .then(async res => {
         if(res){
-            console.log(`Database connection succeffully to ${dbName}`)
-                Catalog.insertMany(catalogData)
-                .then(() => {
-                    console.log('Catalog data imported successfully');
-                })
+            console.log(`Database connection successful to ${dbName}`);
+
+            // Check if there is already values here
+            const currentCatalog = await Catalog.find({});
+
+            // Only insert new rows if empty
+            if (currentCatalog.length < 1) {
+                await Catalog.insertMany(catalogData);
+                console.log('Cart data imported successfully');
+            } else {
+                console.log(`Using already imported Cart data. Current Rows: ${currentCatalog.length}`);
+            }
         }
 
     }).catch(err => {
         console.log(err)
-    })
-
+        return Promise.reject(err);
+    });
