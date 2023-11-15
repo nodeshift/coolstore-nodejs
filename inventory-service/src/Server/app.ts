@@ -13,6 +13,7 @@ app.use(express.urlencoded({extended: true}))
 app.use('/api/v1/inventory', router)
 
 //db connection then server connection
+// TODO: can we change this?  do we need to?
 db.then(() => {
     app.listen(7070, () => console.log('Server is listening on port 7070'))
 })
