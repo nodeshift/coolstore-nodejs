@@ -1,20 +1,23 @@
-import dotenv from 'dotenv'
-import mongoose from 'mongoose'
-import {Inventory} from "../Models/inventory";
-const fs = require('fs');
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import {Inventory} from '../Models/inventory';
+import * as fs from 'node:fs';
 
-dotenv.config()
+//load details from the .env file
+dotenv.config();
 
-//details from the env
-const username = process.env.username
-const password = process.env.password
-const hostname = process.env.hostname
-const dbName   = process.env.dbname
-const importData = fs.readFileSync(__dirname + '/import.json');
+// These values are populated from the .env file
+const username = process.env.username;
+const password = process.env.password;
+const hostname = process.env.hostname;
+const dbName   = process.env.dbname;
+
+//This is json,  should just be able to require/import it?
+const importData:any = fs.readFileSync(__dirname + '/import.json');
 const inventoryData = JSON.parse(importData);
 
 //connection string to mongo local
-const connectionString = `mongodb://${username}:${password}@${hostname}/${dbName}`
+const connectionString = `mongodb://${username}:${password}@${hostname}/${dbName}`;
 
 const options = {
     autoIndex: false, // Don't build indexes
@@ -24,20 +27,27 @@ const options = {
     family: 4 // Use IPv4, skip trying IPv6
 };
 
-console.log(connectionString)
+console.log(connectionString);
 //db connection
 export const db = mongoose.connect(connectionString, options)
-    .then(res => {
+    .then(async res => {
         if(res){
-            console.log(`Database connection successful to ${dbName}`)
+            console.log(`Database connection successful to ${dbName}`);
 
-            Inventory.insertMany(inventoryData)
-                .then(() => {
-                    console.log('Cart data imported successfully');
-                })
+            // Check if there is already values here
+            const currentInventory = await Inventory.find({});
+
+            // Only insert new rows if empty
+            if (currentInventory.length < 1) {
+                await Inventory.insertMany(inventoryData);
+                console.log('Cart data imported successfully');
+            } else {
+                console.log(`Using already imported Cart data. Current Rows: ${currentInventory.length}`);
+            }
         }
 
     }).catch(err => {
         console.log(err)
+        return Promise.reject(err);
     })
 

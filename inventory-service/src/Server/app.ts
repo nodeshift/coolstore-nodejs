@@ -1,5 +1,5 @@
 import express from 'express'
-import { db} from '../Config/db.config'
+import { db } from '../Config/db.config'
 import { router } from '../Routes/inventory.routes'
 
 const app = express()
