@@ -4,3 +4,5 @@ This is an example demo showing a retail store consisting of several microservic
 ![Architecture Screenshot](https://raw.githubusercontent.com/jbossdemocentral/coolstore-microservice/stable-ocp-3.11/docs/images/store.png "CoolStore Online Shop")
 
 
+//TODO: add instructions on how to run
+//TODO: add linting to the projects
