@@ -1,8 +1,11 @@
 import express from 'express'
+import cors from 'cors';
 import { db} from '../Config/db.config'
 import { router } from '../Routes/catalog.routes'
 
 const app = express()
+
+app.use(cors());
 
 //middlewares
 app.use(express.json())

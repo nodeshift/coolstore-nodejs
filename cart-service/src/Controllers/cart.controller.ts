@@ -40,6 +40,12 @@ class CartController {
         res.send(cart.toDTO())
     }
 
+    getCarts = async (req: Request, res: Response) => {
+        console.log("controller get cart..");
+        console.log(await cartService.getShoppingCarts());
+        res.send(cartService.getShoppingCarts());
+    }
+
     checkout = async (req: Request, res: Response) => {
         console.log("controller checkout..")
         const id = req.params.cartId

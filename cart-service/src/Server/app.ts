@@ -1,7 +1,9 @@
 import express from 'express'
+import cors from 'cors';
 import { router } from '../Routes/cart.routes'
 
-const app = express()
+const app = express();
+app.use(cors());
 
 //middlewares
 app.use(express.json())

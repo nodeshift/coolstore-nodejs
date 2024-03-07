@@ -138,10 +138,11 @@ mvnw.cmd
 *.iml
 .project
 .classpath
-.dockerignore
 
 .vscode/
 .idea/
 
 
 # End of https://www.gitignore.io/api/node,java,maven
+
+tmp/

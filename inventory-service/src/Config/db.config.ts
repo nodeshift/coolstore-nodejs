@@ -9,7 +9,7 @@ dotenv.config();
 // These values are populated from the .env file
 const username = process.env.username;
 const password = process.env.password;
-const hostname = process.env.hostname;
+const hostname = process.env.COOLSTORE_DB_SERVICE_HOST || 'localhost';
 const dbName   = process.env.dbname;
 
 //This is json,  should just be able to require/import it?

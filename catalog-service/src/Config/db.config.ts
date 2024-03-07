@@ -8,7 +8,7 @@ dotenv.config()
 //details from the env
 const username = process.env.username
 const password = process.env.password
-const hostname = process.env.hostname
+const hostname = process.env.COOLSTORE_DB_SERVICE_HOST || 'localhost';
 const dbName   = process.env.dbname
 const importData = fs.readFileSync(__dirname + '/import.json');
 const catalogData = JSON.parse(importData);

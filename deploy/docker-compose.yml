@@ -13,3 +13,23 @@ services:
             - 27017:27017
         volumes:
             - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    inventoryservice:
+        depends_on:
+            - coolstoreDB
+        build: ../inventory-service
+        restart: unless-stopped
+        ports:
+            - 8080:8080
+        environment:
+            - COOLSTORE_DB_SERVICE_HOST=coolstoreDB
+    catalogservice:
+        depends_on:
+            - coolstoreDB
+        build: ../catalog-service
+        restart: unless-stopped
+        ports:
+            - 7072:7072
+        environment:
+            - COOLSTORE_DB_SERVICE_HOST=coolstoreDB
+            - INVERNTORY_SERVICE_HOST=inventoryservice
+

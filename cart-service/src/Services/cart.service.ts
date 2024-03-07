@@ -9,6 +9,14 @@ export class CartService {
 
     carts: Map<string, Cart> = new Map();
 
+    async getShoppingCarts() {
+        console.log('Getting all the shopping carts');
+        this.carts.forEach((value, key) => {
+            console.log(`${key} = ${value}`);
+          });
+        return this.carts.size;
+    }
+
     async getShoppingCart(cartId: string){
         let cart = this.carts.get(cartId)
         if (cart instanceof Cart) {
