@@ -146,3 +146,4 @@ mvnw.cmd
 # End of https://www.gitignore.io/api/node,java,maven
 
 tmp/
+dist/

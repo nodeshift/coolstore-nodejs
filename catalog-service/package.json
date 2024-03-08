@@ -2,10 +2,9 @@
   "name": "catalog-service",
   "version": "1.0.0",
   "description": "coolstore backend service",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "nodemon ./src/Server/app.ts",
+    "start": "node ./dist/Server/app.js",
     "dev": "nodemon ./src/Server/app.ts",
     "build": "tsc --project tsconfig.json"
   },
