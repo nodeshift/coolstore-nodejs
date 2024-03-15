@@ -1,6 +1,15 @@
 version: '3.7'
 
 services:
+    cartCache:
+        image: redis:latest
+        container_name: cartCache
+        command: redis-server --save 20 1 --loglevel warning
+        restart: always
+        ports:
+            - 6379:6379
+        volumes:
+            - /data
     coolstoreDB:
         image: mongo:latest
         container_name: coolstoreDB
@@ -32,4 +41,3 @@ services:
         environment:
             - COOLSTORE_DB_SERVICE_HOST=coolstoreDB
             - INVERNTORY_SERVICE_HOST=inventoryservice
-

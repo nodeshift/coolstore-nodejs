@@ -3,7 +3,14 @@ import {CartItem} from "../Models/cartItem";
 import {CartRequest} from "../Models/cartRequest";
 import {ps} from "./promotion.service";
 import {ss} from "./shipping.service";
+import { createClient } from "redis";
 
+const redisClient = createClient();
+
+redisClient.on('error', (err) => {
+    console.log('Error');
+    console.log(err);
+});
 
 export class CartService {
 
@@ -18,47 +25,82 @@ export class CartService {
     }
 
     async getShoppingCart(cartId: string){
-        let cart = this.carts.get(cartId)
-        if (cart instanceof Cart) {
-            this.carts.set(cartId, cart);
+        // Can we checm first if we have a connection?
+        await redisClient.connect();
+        let redisCart: any = await redisClient.get(cartId);
+        let cart;
+
+        // No Cart in the cache
+        if (!redisCart) {
+            console.log('No Cart in Redis');
+            //Create a new Cart object and return that
+            cart = new Cart(cartId);
+            await redisClient.set(cartId, JSON.stringify(cart));
+        } else {
+            // Cart in the Cache
+            console.log('Yes Cart in Redis');
+            cart = new Cart(cartId);
+            cart.initFromCart(JSON.parse(redisCart));
         }
-        else {
-            cart = new Cart(cartId)
-            this.carts.set(cartId, cart);
-        }
+
+        // Old Stuff from in-memory
+        // let cart = this.carts.get(cartId)
+        // if (cart instanceof Cart) {
+        //     this.carts.set(cartId, cart);
+        // }
+        // else {
+        //     cart = new Cart(cartId)
+        //     this.carts.set(cartId, cart);
+        // }
+
         this.priceShoppingCart(cart);
+        await redisClient.quit();
         return cart;
     }
 
 
-    async removeCart(cartId: string, item: CartRequest){
-        let cart = await this.getShoppingCart(cartId);
-        let cartItem = new CartItem(item._itemId, item._price, item._quantity, 0.0)
-        if (cart instanceof Cart) {
-            cart.removeCartItem(cartItem);
-        }
-        this.priceShoppingCart(cart);
+    async removeCart(cartId: string, itemId: string){
+        await redisClient.connect();
+        const cart = await this.getShoppingCart(cartId);
+        // let cart = await this.getShoppingCart(cartId);
+        // if (cart instanceof Cart) {
+        //     cart.removeCartItem(itemId);
+        // }
+        // this.priceShoppingCart(cart);
+        await redisClient.quit();
         return cart;
     }
 
     // "product":{"itemId":"165613","name":"Knit socks","desc":"","price":4.15},"promoSavings":0.0}
     async addItem(cartId: string, item: CartRequest){
-        let cart = await this.getShoppingCart(cartId);
-        let cartItem = new CartItem(item._itemId, item._price, item._quantity, 0.0)
-        if (cart instanceof Cart) {
-            console.log(cartItem);
-            cart.addCartItem(cartItem);
-        }
+        const cart = await this.getShoppingCart(cartId);
+        console.log(cart);
+        let cartItem = new CartItem(item._itemId, item._name, item._price, item._quantity, 0.0)
+        cart.addCartItem(cartItem);
+
+        // Save into the cache
+        await redisClient.connect();
+        await redisClient.set(cartId, JSON.stringify(cart));
+
+
+        // let cart = await this.getShoppingCart(cartId);
+        // let cartItem = new CartItem(item._itemId, item._name, item._price, item._quantity, 0.0)
+        // if (cart instanceof Cart) {
+        //     console.log(cartItem);
+        //     cart.addCartItem(cartItem);
+        // }
+
         this.priceShoppingCart(cart);
+        await redisClient.quit();
         return cart;
     }
 
 
     async checkout(cartId: string) {
         const cart = await this.getShoppingCart(cartId);
-        cart.removeAllItems();
-        this.priceShoppingCart(cart);
-        this.carts.set(cartId, cart);
+        // cart.removeAllItems();
+        // this.priceShoppingCart(cart);
+        // this.carts.set(cartId, cart);
         return cart;
     }
 

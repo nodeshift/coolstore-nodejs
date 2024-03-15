@@ -23,6 +23,18 @@ export class Cart {
         this.cartId = cartId;
     }
 
+    initFromCart(cart: any): Cart {
+        console.log(cart);
+        console.log(this);
+        this.cartItemTotal = cart.cartItemTotal;
+        this.cartItemPromoSavings = cart.cartItemPromoSavings;
+        this.shippingTotal = cart.shippingTotal;
+        this.shippingPromoSavings = cart.shippingPromoSavings;
+        this.cartTotal = cart.cartTotal;
+        // this.cartItems = Map<string, any> = new Map();
+        return this;
+    }
+
     addCartItem(cartItem: CartItem): void {
         const cartItemInCart = this.cartItems.get(cartItem.itemId);
         if (cartItemInCart instanceof CartItem) {
@@ -36,17 +48,12 @@ export class Cart {
         }
     }
 
-    removeCartItem(cartItem: CartItem): void {
-        const cartItemInCart = this.cartItems.get(cartItem.itemId);
+    removeCartItem(itemId: string): void {
+        const cartItemInCart = this.cartItems.get(itemId);
         if (cartItemInCart instanceof CartItem) {
-            if (cartItemInCart.quantity >= cartItem.quantity) {
-                cartItemInCart.quantity -= cartItem.quantity;
-                this.cartItems.set(cartItemInCart.itemId, cartItemInCart);
-            } else {
-                this.cartItems.delete(cartItem.itemId);
+            this.cartItems.delete(itemId);
 
-                this.resetTotals();
-            }
+            this.resetTotals();
 
         }
     }
