@@ -60,8 +60,20 @@ export class CartService {
 
 
     async removeCart(cartId: string, itemId: string){
-        await redisClient.connect();
         const cart = await this.getShoppingCart(cartId);
+        await redisClient.connect();
+        // remove the item from the map
+        cart.removeCartItem(itemId);
+
+        // save it back to the cache
+        const toSave = JSON.stringify(cart, (key, value) => {
+            if (value instanceof Map) {
+              return Object.fromEntries(value);
+            }
+            return value;
+          });
+        // Save into the cache
+        await redisClient.set(cartId, toSave);
         // let cart = await this.getShoppingCart(cartId);
         // if (cart instanceof Cart) {
         //     cart.removeCartItem(itemId);

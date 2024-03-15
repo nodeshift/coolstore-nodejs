@@ -50,13 +50,9 @@ export class Cart {
     }
 
     removeCartItem(itemId: string): void {
-        const cartItemInCart = this.cartItems.get(itemId);
-        if (cartItemInCart instanceof CartItem) {
-            this.cartItems.delete(itemId);
+        this.cartItems.delete(itemId);
+        this.resetTotals();
 
-            this.resetTotals();
-
-        }
     }
 
     resetTotals(){

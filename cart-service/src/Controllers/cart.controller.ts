@@ -28,7 +28,7 @@ class CartController {
         const cartId = req.params.cartId;
         const itemId = req.params.itemId;
         const cart = await cartService.removeCart(cartId,itemId);
-        res.send(/*cart.toDTO()*/);
+        res.send(cart.toDTO());
     }
 
     getCart = async (req: Request, res: Response) => {
