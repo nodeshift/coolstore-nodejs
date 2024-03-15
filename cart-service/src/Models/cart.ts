@@ -31,7 +31,8 @@ export class Cart {
         this.shippingTotal = cart.shippingTotal;
         this.shippingPromoSavings = cart.shippingPromoSavings;
         this.cartTotal = cart.cartTotal;
-        // this.cartItems = Map<string, any> = new Map();
+        // COnvert the cartItems to a Map
+        this.cartItems = new Map(Object.entries(cart.cartItems));
         return this;
     }
 

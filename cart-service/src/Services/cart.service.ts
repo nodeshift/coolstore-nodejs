@@ -78,9 +78,15 @@ export class CartService {
         let cartItem = new CartItem(item._itemId, item._name, item._price, item._quantity, 0.0)
         cart.addCartItem(cartItem);
 
+        const toSave = JSON.stringify(cart, (key, value) => {
+            if (value instanceof Map) {
+              return Object.fromEntries(value);
+            }
+            return value;
+          });
         // Save into the cache
         await redisClient.connect();
-        await redisClient.set(cartId, JSON.stringify(cart));
+        await redisClient.set(cartId, toSave);
 
 
         // let cart = await this.getShoppingCart(cartId);
