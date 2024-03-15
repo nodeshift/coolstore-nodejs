@@ -95,7 +95,7 @@ angular.module("app")
 		var deferred = $q.defer();
 		$http({
 			method: 'DELETE',
-			url: baseUrl + '/' + cartId + '/' + product.itemId + '/' + quantity
+			url: baseUrl + '/' + cartId + '/' + product.itemId
 		}).then(function(resp) {
 			cart = resp.data;
 			deferred.resolve(resp.data);
@@ -124,8 +124,9 @@ angular.module("app")
 	factory.addToCart = function(product, quantity) {
 		var deferred = $q.defer();
 		$http({
-			   method: 'POST',
-			   url: baseUrl + '/' + cartId + '/' + product.itemId + '/' + quantity
+			   method: 'PUT',
+			   url: baseUrl + '/' + cartId,
+				 data: { product, quantity }
 		   }).then(function(resp) {
 			    cart = resp.data;
 			   	deferred.resolve(resp.data);

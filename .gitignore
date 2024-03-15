@@ -128,8 +128,6 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-# Package json
-package-lock.json
 
 mvnw
 mvnw.cmd

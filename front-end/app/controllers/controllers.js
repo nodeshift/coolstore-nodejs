@@ -56,7 +56,7 @@ angular.module('app')
 
                     $scope.subtotal = 0;
                     $scope.cart.cartItems.forEach(function (item) {
-                        $scope.subtotal += (item.quantity * item.product.price);
+                        $scope.subtotal += (item.quantity * item.price);
                     });
                 }
 
@@ -68,7 +68,7 @@ angular.module('app')
                 };
 
                 function performAction(action, item) {
-                    cart.removeFromCart(item.product, item.quantity).then(function (newCart) {
+                    cart.removeFromCart(item, item.quantity).then(function (newCart) {
                         reset();
                     }, function (err) {
                         Notifications.error("Error removing from cart: " + err.statusText);

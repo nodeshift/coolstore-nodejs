@@ -19,7 +19,7 @@ angular.element(document).ready(function () {
 
     $http.get("coolstore.json").then(function (response) {
         module.constant("COOLSTORE_CONFIG", response.data);
-        
+
         if (!response.data.SSO_ENABLED) {
             angular.bootstrap(document, ["app"], {
                 strictDi: true

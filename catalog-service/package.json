@@ -6,7 +6,9 @@
     "test": "jest",
     "start": "node ./dist/Server/app.js",
     "dev": "nodemon ./src/Server/app.ts",
-    "build": "tsc --project tsconfig.json"
+    "build": "npm run build:clean && npm run build:compile",
+    "build:clean": "rm -rf ./dist",
+    "build:compile": "tsc --project tsconfig.json"
   },
   "repository": {
     "type": "git",
