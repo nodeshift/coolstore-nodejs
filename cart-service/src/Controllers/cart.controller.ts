@@ -44,15 +44,13 @@ class CartController {
         res.send(cartService.getShoppingCarts());
     }
 
-    createCart = async () => {
-
-    }
-
     checkout = async (req: Request, res: Response) => {
         console.log("controller checkout..")
         const id = req.params.cartId
+        // Send the Order to Kafka
+        // Then Checkout
         const cart = await cartService.checkout(id)
-        res.send(/*cart.toDTO()*/)
+        res.send(cart.toDTO())
     }
 
 }

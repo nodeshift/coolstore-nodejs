@@ -116,8 +116,11 @@ export class CartService {
 
     async checkout(cartId: string) {
         const cart = await this.getShoppingCart(cartId);
-        // cart.removeAllItems();
-        // this.priceShoppingCart(cart);
+        // TODO: something?
+        cart.removeAllItems();
+        this.priceShoppingCart(cart);
+        console.log('bruh', cart);
+        // Resave the cart
         // this.carts.set(cartId, cart);
         return cart;
     }
