@@ -3,14 +3,7 @@ import {CartItem} from "../Models/cartItem";
 import {CartRequest} from "../Models/cartRequest";
 import {ps} from "./promotion.service";
 import {ss} from "./shipping.service";
-import { createClient } from "redis";
-
-const redisClient = createClient();
-
-redisClient.on('error', (err) => {
-    console.log('Error');
-    console.log(err);
-});
+import {getClient} from '../Config/cache.config';
 
 export class CartService {
 
@@ -25,9 +18,8 @@ export class CartService {
     }
 
     async getShoppingCart(cartId: string){
-        // Can we checm first if we have a connection?
-        await redisClient.connect();
-        let redisCart: any = await redisClient.get(cartId);
+        const redis = await getClient();
+        let redisCart: any = await redis.get(cartId);
         let cart;
 
         // No Cart in the cache
@@ -35,7 +27,7 @@ export class CartService {
             console.log('No Cart in Redis');
             //Create a new Cart object and return that
             cart = new Cart(cartId);
-            await redisClient.set(cartId, JSON.stringify(cart));
+            await redis.set(cartId, JSON.stringify(cart));
         } else {
             // Cart in the Cache
             console.log('Yes Cart in Redis');
@@ -54,14 +46,12 @@ export class CartService {
         // }
 
         this.priceShoppingCart(cart);
-        await redisClient.quit();
         return cart;
     }
 
 
     async removeCart(cartId: string, itemId: string){
         const cart = await this.getShoppingCart(cartId);
-        await redisClient.connect();
         // remove the item from the map
         cart.removeCartItem(itemId);
 
@@ -73,13 +63,13 @@ export class CartService {
             return value;
           });
         // Save into the cache
-        await redisClient.set(cartId, toSave);
+        const redis = await getClient();
+        await redis.set(cartId, toSave);
         // let cart = await this.getShoppingCart(cartId);
         // if (cart instanceof Cart) {
         //     cart.removeCartItem(itemId);
         // }
-        // this.priceShoppingCart(cart);
-        await redisClient.quit();
+        this.priceShoppingCart(cart);
         return cart;
     }
 
@@ -97,8 +87,8 @@ export class CartService {
             return value;
           });
         // Save into the cache
-        await redisClient.connect();
-        await redisClient.set(cartId, toSave);
+        const redis = await getClient();
+        await redis.set(cartId, toSave);
 
 
         // let cart = await this.getShoppingCart(cartId);
@@ -109,7 +99,6 @@ export class CartService {
         // }
 
         this.priceShoppingCart(cart);
-        await redisClient.quit();
         return cart;
     }
 
