@@ -24,8 +24,6 @@ export class Cart {
     }
 
     initFromCart(cart: any): Cart {
-        console.log(cart);
-        console.log(this);
         this.cartItemTotal = cart.cartItemTotal;
         this.cartItemPromoSavings = cart.cartItemPromoSavings;
         this.shippingTotal = cart.shippingTotal;

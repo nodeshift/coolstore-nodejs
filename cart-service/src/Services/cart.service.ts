@@ -4,6 +4,7 @@ import {CartRequest} from "../Models/cartRequest";
 import {ps} from "./promotion.service";
 import {ss} from "./shipping.service";
 import {getClient} from '../Config/cache.config';
+import {getKafkaClient, TOPIC} from '../Config/kafka.config';
 
 export class CartService {
 
@@ -32,6 +33,7 @@ export class CartService {
             // Cart in the Cache
             console.log('Yes Cart in Redis');
             cart = new Cart(cartId);
+            console.log(redisCart);
             cart.initFromCart(JSON.parse(redisCart));
         }
 
@@ -105,12 +107,42 @@ export class CartService {
 
     async checkout(cartId: string) {
         const cart = await this.getShoppingCart(cartId);
-        // TODO: something?
+        // Send the Order to Kafka
+        const kfkProducer = getKafkaClient().producer();
+        await kfkProducer.connect();
+
+        const msg = {
+          key: `order-${cart.cartId}`,
+          value: JSON.stringify(cart, (key, value) => {
+            if (value instanceof Map) {
+              return Object.fromEntries(value);
+            }
+            return value;
+          })
+        }
+        try {
+          await kfkProducer.send({
+            topic: TOPIC,
+            messages: [msg]
+          });
+        } catch(err) {
+          console.log('kakfa send Message Error', err);
+        }
+
         cart.removeAllItems();
+        console.log('Cart after removeAllItems', cart);
         this.priceShoppingCart(cart);
-        console.log('bruh', cart);
         // Resave the cart
         // this.carts.set(cartId, cart);
+         // Save into the cache
+        const redis = await getClient();
+        const toSave = JSON.stringify(cart, (key, value) => {
+          if (value instanceof Map) {
+            return Object.fromEntries(value);
+          }
+          return value;
+        });
+        await redis.set(cartId, toSave);
         return cart;
     }
 

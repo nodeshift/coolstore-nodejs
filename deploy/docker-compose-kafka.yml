@@ -17,6 +17,3 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
     depends_on:
       - zookeeper
-volumes:
-  kafka-volume:
-  zookeeper-volume:
