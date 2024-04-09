@@ -6,7 +6,7 @@ services:
         image: wurstmeister/zookeeper:latest
         ports:
             - "2181:2181"
-    my-cluster:
+    kafka:
         restart: always
         image: wurstmeister/kafka:2.11-1.1.1
         ports:
@@ -44,13 +44,13 @@ services:
     #     depends_on:
     #         - coolstoreDB
     #         - cartCache
-    #         - my-cluster
+    #         - kafka
     #     build: ../cart-service
     #     ports:
     #         - 7074:7074
     #     environment:
     #         - REDIS_SERVICE_HOST=cartCache
-    #         - KAFKA_SERVICE_HOST=my-cluster
+    #         - KAFKA_SERVICE_HOST=kafka
     inventoryservice:
         depends_on:
             - coolstoreDB
