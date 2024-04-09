@@ -40,6 +40,17 @@ services:
             - 27017:27017
         volumes:
             - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    # cartservice:
+    #     depends_on:
+    #         - coolstoreDB
+    #         - cartCache
+    #         - my-cluster
+    #     build: ../cart-service
+    #     ports:
+    #         - 7074:7074
+    #     environment:
+    #         - REDIS_SERVICE_HOST=cartCache
+    #         - KAFKA_SERVICE_HOST=my-cluster
     inventoryservice:
         depends_on:
             - coolstoreDB

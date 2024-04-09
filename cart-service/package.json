@@ -4,7 +4,7 @@
   "description": "coolstore backend service",
   "scripts": {
     "test": "jest",
-    "start": "nodemon ./src/Server/app.ts",
+    "start": "node ./dist/Server/app.js",
     "dev": "nodemon ./src/Server/app.ts",
     "build": "npm run build:clean && npm run build:compile",
     "build:clean": "rm -rf ./dist",

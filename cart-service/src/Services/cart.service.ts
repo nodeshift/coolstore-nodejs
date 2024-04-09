@@ -25,27 +25,16 @@ export class CartService {
 
         // No Cart in the cache
         if (!redisCart) {
-            console.log('No Cart in Redis');
+            console.log('No Cart in Redis....Creating one');
             //Create a new Cart object and return that
             cart = new Cart(cartId);
             await redis.set(cartId, JSON.stringify(cart));
         } else {
             // Cart in the Cache
-            console.log('Yes Cart in Redis');
+            console.log('Yes, Cart in Redis');
             cart = new Cart(cartId);
-            console.log(redisCart);
             cart.initFromCart(JSON.parse(redisCart));
         }
-
-        // Old Stuff from in-memory
-        // let cart = this.carts.get(cartId)
-        // if (cart instanceof Cart) {
-        //     this.carts.set(cartId, cart);
-        // }
-        // else {
-        //     cart = new Cart(cartId)
-        //     this.carts.set(cartId, cart);
-        // }
 
         this.priceShoppingCart(cart);
         return cart;
@@ -67,10 +56,6 @@ export class CartService {
         // Save into the cache
         const redis = await getClient();
         await redis.set(cartId, toSave);
-        // let cart = await this.getShoppingCart(cartId);
-        // if (cart instanceof Cart) {
-        //     cart.removeCartItem(itemId);
-        // }
         this.priceShoppingCart(cart);
         return cart;
     }
@@ -78,7 +63,6 @@ export class CartService {
     // "product":{"itemId":"165613","name":"Knit socks","desc":"","price":4.15},"promoSavings":0.0}
     async addItem(cartId: string, item: CartRequest){
         const cart = await this.getShoppingCart(cartId);
-        console.log(cart);
         let cartItem = new CartItem(item._itemId, item._name, item._price, item._quantity, 0.0)
         cart.addCartItem(cartItem);
 
@@ -92,28 +76,21 @@ export class CartService {
         const redis = await getClient();
         await redis.set(cartId, toSave);
 
-
-        // let cart = await this.getShoppingCart(cartId);
-        // let cartItem = new CartItem(item._itemId, item._name, item._price, item._quantity, 0.0)
-        // if (cart instanceof Cart) {
-        //     console.log(cartItem);
-        //     cart.addCartItem(cartItem);
-        // }
-
         this.priceShoppingCart(cart);
         return cart;
     }
 
 
-    async checkout(cartId: string) {
+    async checkout(cartId: string, order: any) {
         const cart = await this.getShoppingCart(cartId);
+
         // Send the Order to Kafka
         const kfkProducer = getKafkaClient().producer();
         await kfkProducer.connect();
 
         const msg = {
-          key: `order-${cart.cartId}`,
-          value: JSON.stringify(cart, (key, value) => {
+          key: order.orderId,
+          value: JSON.stringify(order, (key, value) => {
             if (value instanceof Map) {
               return Object.fromEntries(value);
             }
@@ -130,6 +107,7 @@ export class CartService {
         }
 
         cart.removeAllItems();
+        cart.resetTotals();
         console.log('Cart after removeAllItems', cart);
         this.priceShoppingCart(cart);
         // Resave the cart

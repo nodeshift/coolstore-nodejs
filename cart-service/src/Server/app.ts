@@ -2,8 +2,6 @@ import express from 'express'
 import cors from 'cors';
 
 import { cacheConfig } from '../Config/cache.config';
-import { getKafkaClient } from '../Config/kafka.config';
-getKafkaClient();
 
 const app = express();
 app.use(cors());

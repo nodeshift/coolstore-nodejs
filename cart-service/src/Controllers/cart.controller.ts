@@ -7,7 +7,6 @@ class CartController {
     // create new item
     addItem = async (req: Request, res: Response) => {
         console.log("controller add Item..")
-        console.log(req.body);
         const product = req.body.product;
 
         let data = new CartRequest(product.itemId.toString(),
@@ -39,15 +38,14 @@ class CartController {
     }
 
     getCarts = async (req: Request, res: Response) => {
-        console.log("controller get cart..");
-        console.log(await cartService.getShoppingCarts());
+        console.log("controller get carts..");
         res.send(cartService.getShoppingCarts());
     }
 
     checkout = async (req: Request, res: Response) => {
         console.log("controller checkout..")
         const id = req.params.cartId;
-        const cart = await cartService.checkout(id)
+        const cart = await cartService.checkout(id, req.body);
         res.send(cart.toDTO())
     }
 

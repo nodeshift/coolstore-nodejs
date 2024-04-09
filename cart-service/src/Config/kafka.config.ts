@@ -1,17 +1,18 @@
 import dotenv from 'dotenv';
 import { Kafka, logLevel } from 'kafkajs';
 
-
 dotenv.config();
 
-//details from the env
+const host = process.env.KAFKA_SERVICE_HOST || process.env['kafka_host'] || 'localhost';
+const port = process.env.KAFKA_SERVICE_PORT || process.env['kafka_port'] || 9092;
 
 // Create the Kafka Instance and such
 const kafkaConnectionBinding = {
-  logLevel: logLevel.DEBUG,
-  brokers: ['localhost:9092'],
+  brokers: [`${host}:${port}`],
   clientId: 'cart-service'
 };
+
+console.log('Kafka connection config', kafkaConnectionBinding);
 
 export const TOPIC = 'orders';
 
