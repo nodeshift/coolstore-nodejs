@@ -3,7 +3,7 @@ import { Kafka, logLevel } from 'kafkajs';
 
 dotenv.config();
 
-const host = process.env.KAFKA_SERVICE_HOST || process.env['kafka_host'] || 'localhost';
+const host = process.env.MY_CLUSTER_KAFKA_BOOTSTRAP_SERVICE_HOST || process.env['kafka_host'] || 'localhost';
 const port = process.env.KAFKA_SERVICE_PORT || process.env['kafka_port'] || 9092;
 
 // Create the Kafka Instance and such
