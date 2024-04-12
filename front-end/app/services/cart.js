@@ -7,7 +7,8 @@ angular.module("app")
 
  	// baseUrl = $location.protocol() + '://cart-' + COOLSTORE_CONFIG.OCP_NAMESPACE + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1") + '/api/cart';
 	// Following used for local testing
- 	baseUrl = 'http://localhost:7074/api/v2/cart';
+ 	// baseUrl = 'http://localhost:7074/api/v2/cart';
+	baseUrl = 'https://cart-node-dev.apps.ci-ln-wfw1mxt-76ef8.aws-2.ci.openshift.org/api/v2/cart';
 
 
 	factory.checkout_withBilling = function(ccinfo){

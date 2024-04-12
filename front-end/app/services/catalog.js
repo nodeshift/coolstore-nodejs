@@ -4,8 +4,8 @@ angular.module("app")
 
 .factory('catalog', ['$http', '$q', 'COOLSTORE_CONFIG', 'Auth', '$location', function($http, $q, COOLSTORE_CONFIG, $auth, $location) {
 	var factory = {}, products, baseUrl;
-
-    baseUrl = $location.protocol() + '://localhost:7072/api/v1/products';
+    baseUrl = 'https://catalog-node-dev.apps.ci-ln-wfw1mxt-76ef8.aws-2.ci.openshift.org/api/v1/products';
+//     baseUrl = $location.protocol() + '://localhost:7072/api/v1/products';
     // baseUrl = $location.protocol() + '://catalog-' + COOLSTORE_CONFIG.OCP_NAMESPACE + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1") + '/api/products';
 
     factory.getProducts = function() {
