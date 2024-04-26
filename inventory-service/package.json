@@ -8,8 +8,17 @@
     "dev": "nodemon ./src/Server/app.ts",
     "build": "npm run build:clean && npm run build:compile",
     "build:clean": "rm -rf ./dist",
-    "build:compile": "tsc --project tsconfig.json"
+    "build:compile": "tsc --project tsconfig.json",
+    "deploy": "npx nodeshift --name inventory --build.strategy Docker --useDeployment --expose --deploy.port 8080"
   },
+  "files": [
+    "tsconfig.json",
+    "package.json",
+    "Dockerfile",
+    ".env",
+    ".dockerignore",
+    "src"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sshaaf/coolstore-nodejs.git"

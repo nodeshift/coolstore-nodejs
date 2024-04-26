@@ -6,7 +6,7 @@ angular.module("app")
 	var factory = {}, cart, cartId, protocolUrl, baseUrl, apiUrl, hostUrl;
 
   protocolUrl = $location.protocol() + '://';
-  hostUrl = COOLSTORE_CONFIG.OCP_NAMESPACE ? 'catalog-' + COOLSTORE_CONFIG.OCP_NAMESPACE + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1") : 'localhost:7074'
+  hostUrl = COOLSTORE_CONFIG.OCP_NAMESPACE ? 'cart-' + COOLSTORE_CONFIG.OCP_NAMESPACE + '.' + $location.host().replace(/^.*?\.(.*)/g,"$1") : 'localhost:7074'
   apiUrl = '/api/v2/cart';
 
 	baseUrl = protocolUrl + hostUrl + apiUrl;

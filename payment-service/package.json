@@ -6,10 +6,20 @@
   "directories": {
     "test": "test"
   },
+  "files": [
+    "package.json",
+    "Dockerfile",
+    ".env",
+    ".dockerignore",
+    "app.js",
+    "routes",
+    "plugins"
+  ],
   "scripts": {
     "test": "node --test test/**/*.test.js",
     "start": "fastify start -p 3001 -l info -a 0.0.0.0 app.js",
-    "dev": "fastify start -p 3001 -w -l info -P app.js"
+    "dev": "fastify start -p 3001 -w -l info -P app.js",
+    "deploy": "npx nodeshift --name payments --build.strategy Docker --useDeployment --expose --deploy.port 3001"
   },
   "keywords": [],
   "author": "",

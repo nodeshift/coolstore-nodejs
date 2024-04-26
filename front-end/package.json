@@ -30,8 +30,18 @@
   "engines": {
     "node": ">=0.10.10"
   },
+  "files": [
+    "bower.json",
+    "package.json",
+    "Dockerfile",
+    ".env",
+    ".dockerignore",
+    "app",
+    "views",
+    "server.js"
+  ],
   "scripts": {
-    "nodeshift": "nodeshift",
+    "deploy": "npx nodeshift --build.strategy Docker --useDeployment --expose --deploy.port 8081",
     "postinstall": "node_modules/.bin/bower install"
   }
 }
