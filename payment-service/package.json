@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "node --test test/**/*.test.js",
-    "start": "fastify start -p 3001 -l info app.js",
+    "start": "fastify start -p 3001 -l info -a 0.0.0.0 app.js",
     "dev": "fastify start -p 3001 -w -l info -P app.js"
   },
   "keywords": [],
