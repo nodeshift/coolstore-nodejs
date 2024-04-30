@@ -145,3 +145,5 @@ mvnw.cmd
 
 tmp/
 dist/
+
+.DS_Store

@@ -99,3 +99,4 @@ services:
         environment:
             - COOLSTORE_DB_SERVICE_HOST=coolstoreDB
             - INVENTORY_SERVICE_HOST=inventoryservice
+            - INVENTORY_SERVICE_PORT=8080
