@@ -1,0 +1,22 @@
+schemaVersion: 2.2.0
+metadata:
+  name: cool-store-demo
+components:
+  - name: nodejs-runtime
+    container:
+      image: registry.access.redhat.com/ubi8/nodejs-20:latest
+      args: ['tail', '-f', '/dev/null']
+      memoryLimit: 6Gi
+      memoryRequest: 4Gi
+      cpuLimit: 2000m
+      cpuRequest: 500m
+      env:
+        - name: DEBUG_PORT
+          value: '5858'
+      endpoints:
+        - exposure: public
+          name: inventory-index
+          targetPort: 8080
+        - exposure: none
+          name: debug
+          targetPort: 5858
