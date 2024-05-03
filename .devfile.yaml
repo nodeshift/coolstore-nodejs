@@ -4,7 +4,7 @@ metadata:
 components:
   - name: openshift-cli-runtime
     container:
-      image: openshift/origin-cli:v3.11.0
+      image: docker.io/openshift/origin-cli:v3.11.0
   - name: nodejs-runtime
     container:
       image: registry.access.redhat.com/ubi8/nodejs-20:latest
