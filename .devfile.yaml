@@ -1,6 +1,6 @@
 schemaVersion: 2.2.2
 metadata:
-  name: nodejs-web-app
+  name: coolstore-demo-node
 components:
   - name: tools
     container:
