@@ -1,25 +1,42 @@
 schemaVersion: 2.2.0
 metadata:
-  name: cool-store-demo
+  name: ccn-workshop
+attributes:
+  controller.devfile.io/storage-type: ephemeral
 components:
-  - name: openshift-cli-runtime
+  - name: quarkus-tools
     container:
-      image: docker.io/openshift/origin-cli:v3.11.0
-  - name: nodejs-runtime
-    container:
-      image: registry.access.redhat.com/ubi8/nodejs-20:latest
-      args: ['tail', '-f', '/dev/null']
-      memoryLimit: 6Gi
-      memoryRequest: 4Gi
       cpuLimit: 2000m
       cpuRequest: 500m
-      env:
-        - name: DEBUG_PORT
-          value: '5858'
       endpoints:
         - exposure: public
-          name: inventory-index
+          name: index-webpage
+          protocol: http
+          targetPort: 8080
+        - exposure: public
+          name: quarkus-devui
+          path: /q/dev
+          protocol: http
           targetPort: 8080
         - exposure: none
-          name: debug
-          targetPort: 5858
+          name: quarkus-debug
+          protocol: tcp
+          targetPort: 5005
+        - exposure: none
+          name: test-endpoint
+          protocol: tcp
+          targetPort: 8081
+      env:
+        - value: /home/jboss/.m2
+          name: MAVEN_CONFIG
+        - value: -Xmx4G -Xss128M -XX:MetaspaceSize=1G -XX:MaxMetaspaceSize=2G
+          name: MAVEN_OPTS
+      image: quay.io/openshiftlabs/cloudnative-workspaces-quarkus:3.8-rhbq3
+      memoryLimit: 6Gi
+      memoryRequest: 4Gi
+      volumeMounts:
+        - name: npm
+          path: /home/user/.npm
+  - name: npm
+    volume:
+      size: 1G
