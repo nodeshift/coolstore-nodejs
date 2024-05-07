@@ -9,6 +9,7 @@
     "build": "npm run build:clean && npm run build:compile",
     "build:clean": "rm -rf ./dist",
     "build:compile": "tsc --project tsconfig.json",
+    "postbuild": "cp -r ./src/public ./dist/",
     "deploy": "npx nodeshift --name inventory --build.strategy Docker --useDeployment --expose --deploy.port 8080"
   },
   "files": [
