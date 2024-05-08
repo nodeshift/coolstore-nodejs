@@ -31,6 +31,12 @@ podman compose up
 
 * Pre-Req: Have an Openshift cluster and log in using the `oc` client
 
+* Change into the deploy directory
+
+```
+cd deploy
+```
+
 ### Create Project/Namespace
 
 oc new-project coolstore-dev
