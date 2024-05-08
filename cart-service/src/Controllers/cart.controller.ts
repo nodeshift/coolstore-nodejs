@@ -7,12 +7,13 @@ class CartController {
     // create new item
     addItem = async (req: Request, res: Response) => {
         console.log("controller add Item..")
+        const product = req.body.product;
 
-        let data = new CartRequest(req.body.itemId.toString(),
-            req.body.name,
-            req.body.price,
+        let data = new CartRequest(product.itemId.toString(),
+            product.title,
+            product.price,
             req.body.quantity,
-            req.body.itemId);
+            product.itemId);
 
         const cartId = req.params.cartId;
         const cart = await cartService.addItem(cartId,data);
@@ -22,14 +23,10 @@ class CartController {
 
     removeItem = async (req: Request, res: Response) => {
         console.log("controller remove Item..")
-        let data = new CartRequest(req.body.itemId.toString(),
-            req.body.name,
-            req.body.price,
-            req.body.quantity,
-            req.body.itemId);
 
         const cartId = req.params.cartId;
-        const cart = await cartService.removeCart(cartId,data);
+        const itemId = req.params.itemId;
+        const cart = await cartService.removeCart(cartId,itemId);
         res.send(cart.toDTO());
     }
 
@@ -37,13 +34,18 @@ class CartController {
         console.log("controller get cart..")
         const id = req.params.cartId
         const cart = await cartService.getShoppingCart(id)
-        res.send(cart.toDTO())
+        res.send(cart.toDTO());
+    }
+
+    getCarts = async (req: Request, res: Response) => {
+        console.log("controller get carts..");
+        res.send(cartService.getShoppingCarts());
     }
 
     checkout = async (req: Request, res: Response) => {
         console.log("controller checkout..")
-        const id = req.params.cartId
-        const cart = await cartService.checkout(id)
+        const id = req.params.cartId;
+        const cart = await cartService.checkout(id, req.body);
         res.send(cart.toDTO())
     }
 

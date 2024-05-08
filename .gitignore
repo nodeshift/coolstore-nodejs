@@ -104,8 +104,8 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
-.env.test
+# .env
+# .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -128,8 +128,6 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
-# Package json
-package-lock.json
 
 mvnw
 mvnw.cmd
@@ -138,9 +136,14 @@ mvnw.cmd
 *.iml
 .project
 .classpath
-.dockerignore
 
 .vscode/
+.idea/
 
 
 # End of https://www.gitignore.io/api/node,java,maven
+
+tmp/
+dist/
+
+.DS_Store

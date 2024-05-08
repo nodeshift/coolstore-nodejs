@@ -1,16 +1,24 @@
 import express from 'express'
-import { router } from '../Routes/cart.routes'
+import cors from 'cors';
 
-const app = express()
+import { cacheConfig } from '../Config/cache.config';
+
+const app = express();
+app.use(cors());
 
 //middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 
-//routes
+// //routes
+import { router } from '../Routes/cart.routes'
 app.use('/api/v2/cart', router)
 
-app.listen(7074, () => console.log('Server is listening on port 7074'))
+cacheConfig().then(() => {
+ app.listen(7074, () => console.log('Server is listening on port 7074'));
+}).catch((err) => {
+  console.log('Not started becuase: ', err);
+});
 
 export { app };
