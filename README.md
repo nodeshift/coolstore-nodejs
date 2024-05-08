@@ -101,13 +101,3 @@ cd deploy/
 
 ./deploy-node-services.sh
 ```
-
-## Run Locally
-
-The whole demo application can be run locally for those using docker/podman.
-
-Run the docker-compose.yml file in the `deploy` directory
-
-```
-podman compose up
-```
