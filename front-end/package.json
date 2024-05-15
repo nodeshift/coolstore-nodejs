@@ -19,7 +19,7 @@
     "isotope-layout": "^3.0.6",
     "jquery-match-height": "^0.7.2",
     "keycloak-connect": "^21.0.1",
-    "patternfly": "3.17.0",
+    "patternfly": "3.59.5",
     "request": "^2.74.0"
   },
   "devDependencies": {
